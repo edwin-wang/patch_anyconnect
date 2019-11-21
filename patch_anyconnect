@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "****** Prerequisite ******"
+echo "Before run this script, OpenVPN and AnyConnect have to be connected!!!"
+echo "CTRL+C to quit, ENTER to continue..."
+read
+
+echo "****** Disconnect AnyConnect ****** "
+/opt/cisco/anyconnect/bin/vpn disconnect
+
+echo "****** Kill AnyConnect app ******"
+sudo killall "Cisco AnyConnect Secure Mobility Client"
+
+echo "****** Add route table ******"
+# netstat -nr # check route table
+sudo /sbin/route add -net 10.0.9.0 10.0.9.6 255.255.255.0 
+sudo /sbin/route add -net 192.168.1.0 10.0.9.1 255.255.255.0
+sudo /sbin/route add -net 192.168.0.0 10.0.9.1 255.255.255.0
+sudo /sbin/route add -net 192.168.101.0 10.0.9.1 255.255.255.0
+sudo /sbin/route add -net 192.168.102.0 10.0.9.1 255.255.255.0
+sudo /sbin/route add -net 192.168.10.0 10.0.9.1 255.255.255.0
+sudo /sbin/route add -net 192.168.11.0 10.0.9.1 255.255.255.0
+
+echo "****** Reconnect AnyConnect ******"
+/opt/cisco/anyconnect/bin/vpn connect CHINA
+
+echo "****** Please relaunch AnyConnect app manually ******"
+#"/Applications/Cisco/Cisco AnyConnect Secure Mobility Client.app/Contents/MacOS/Cisco AnyConnect Secure Mobility Client" &
